@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <a href=""></a>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist Mídias</title>
+  <style>
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --border:    #2a2d3a;
+      --accent:    #6c63ff;
+      --accent2:   #a78bfa;
+      --green:     #22c55e;
+      --yellow:    #facc15;
+      --red:       #f87171;
+      --text:      #e8e8f0;
+      --muted:     #6b7280;
+      --radius:    12px;
+      --font:      'Segoe UI', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    /* ── Header ─────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, #1a1d27 0%, #12151f 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 20px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    header h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      flex: 1;
+    }
+
+    header h1 span {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Tab nav */
+    .tab-nav {
+      display: flex;
+      gap: 6px;
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 3px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      border-radius: 6px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 7px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tab-btn.active {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    /* Meta info row */
+    .meta-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .meta-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-field label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .meta-field input, .meta-field select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.9rem;
+      padding: 8px 10px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .meta-field input:focus, .meta-field select:focus {
+      border-color: var(--accent);
+    }
+
+    .meta-field select option { background: var(--surface); }
+
+    /* Global progress bar */
+    .global-progress { margin-top: 14px; }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .progress-label strong { color: var(--text); }
+
+    .progress-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 99px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* ── Main ────────────────────────────────────── */
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 16px 16px 0;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Section ─────────────────────────────────── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .section-header:active { background: rgba(255,255,255,0.03); }
+
+    .section-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+    .section-title { flex: 1; }
+
+    .section-title h2 { font-size: 0.95rem; font-weight: 600; }
+
+    .section-title .section-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .section-badge {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+      padding: 3px 9px;
+      white-space: nowrap;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .section-badge.done {
+      background: rgba(34,197,94,0.15);
+      border-color: rgba(34,197,94,0.4);
+      color: var(--green);
+    }
+
+    .chevron {
+      color: var(--muted);
+      font-size: 0.8rem;
+      transition: transform 0.3s;
+    }
+
+    .section.collapsed .chevron { transform: rotate(-90deg); }
+
+    .section-mini-bar { height: 3px; background: var(--border); }
+
+    .section-mini-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .section-body { padding: 4px 0 8px; }
+    .section.collapsed .section-body { display: none; }
+
+    /* ── Check item ──────────────────────────────── */
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: background 0.1s;
+      border-radius: 8px;
+      margin: 0 8px;
+    }
+
+    .check-item:active { background: rgba(255,255,255,0.04); }
+
+    .check-item.checked .item-text {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .checkbox {
+      width: 24px; height: 24px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+      background: var(--bg);
+    }
+
+    .check-item.checked .checkbox {
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    .checkmark { display: none; color: white; font-size: 0.85rem; font-weight: 700; }
+    .check-item.checked .checkmark { display: block; }
+
+    .item-text { font-size: 0.9rem; line-height: 1.3; transition: color 0.2s; flex: 1; }
+
+    /* ── Phase divider ───────────────────────────── */
+    .phase-divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px 6px;
+      margin: 4px 0 2px;
+    }
+
+    .phase-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .phase-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ── Equipe section ──────────────────────────── */
+    .equipe-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 12px;
+    }
+
+    .equipe-section h3 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .equipe-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .member-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 16px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .member-btn:active { opacity: 0.8; }
+
+    .member-btn.selected {
+      background: rgba(108,99,255,0.2);
+      border-color: var(--accent);
+      color: var(--accent2);
+    }
+
+    .member-custom { display: flex; gap: 8px; margin-top: 10px; }
+
+    .member-custom input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.85rem;
+      padding: 8px 12px;
+      outline: none;
+    }
+
+    .member-custom input:focus { border-color: var(--accent); }
+
+    .member-custom button {
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 14px;
+    }
+
+    .equipe-selected { margin-top: 10px; font-size: 0.8rem; color: var(--muted); }
+    .equipe-selected span { color: var(--accent2); font-weight: 600; }
+
+    /* ── Actions ─────────────────────────────────── */
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 14px;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary { background: var(--accent); color: white; }
+
+    .btn-danger {
+      background: rgba(248,113,113,0.15);
+      border: 1px solid rgba(248,113,113,0.3);
+      color: var(--red);
+    }
+
+    /* ── Histórico ───────────────────────────────── */
+    .historico-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .historico-header h2 { font-size: 1rem; font-weight: 600; }
+
+    .btn-refresh {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+    }
+
+    .culto-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .culto-card:hover { border-color: var(--accent); }
+
+    .culto-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+    }
+
+    .culto-card-info { flex: 1; }
+
+    .culto-card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .culto-card-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .culto-card-progress {
+      text-align: right;
+    }
+
+    .culto-card-pct {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent2);
+    }
+
+    .culto-card-count {
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .culto-mini-bar { height: 3px; background: var(--border); }
+    .culto-mini-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    /* Detail modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 300;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      max-width: 600px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-header h3 { font-size: 1rem; font-weight: 600; }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 2px 6px;
+    }
+
+    .modal-body { padding: 16px 18px; }
+
+    .modal-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .modal-meta-item label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .modal-meta-item span {
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .modal-equipe {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .modal-equipe-tag {
+      background: rgba(108,99,255,0.15);
+      border: 1px solid rgba(108,99,255,0.3);
+      border-radius: 99px;
+      color: var(--accent2);
+      font-size: 0.8rem;
+      padding: 4px 12px;
+    }
+
+    .modal-itens { list-style: none; }
+
+    .modal-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .modal-item:last-child { border-bottom: none; }
+
+    .modal-item-dot {
+      width: 10px; height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .modal-item-dot.done { background: var(--green); }
+    .modal-item-dot.not { background: var(--border); }
+
+    .modal-item-text.done { color: var(--muted); text-decoration: line-through; }
+
+    .modal-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-delete {
+      background: rgba(248,113,113,0.15);
+      border: 1px solid rgba(248,113,113,0.3);
+      border-radius: 8px;
+      color: var(--red);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 16px;
+    }
+
+    /* Empty / loading states */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state .icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .empty-state p { font-size: 0.9rem; }
+
+    .loading-state {
+      text-align: center;
+      padding: 30px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    /* API status */
+    .api-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .api-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .api-dot.online { background: var(--green); }
+    .api-dot.offline { background: var(--red); }
+
+    /* ── Toast ───────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1e2130;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 12px 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+      z-index: 200;
+      white-space: nowrap;
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── Responsive ──────────────────────────────── */
+    @media (min-width: 480px) {
+      .meta-row { grid-template-columns: 1fr 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo-icon">📋</div>
+    <div style="flex:1">
+      <h1>Checklist Mídias <span>Comunicação Visual</span></h1>
+    </div>
+    <div class="api-status">
+      <div class="api-dot" id="api-dot"></div>
+      <span id="api-status-text">…</span>
+    </div>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('checklist')">✅ Checklist</button>
+    <button class="tab-btn" onclick="switchTab('historico')">📂 Histórico</button>
+  </div>
+
+  <!-- Meta (visível só no tab checklist) -->
+  <div id="header-meta">
+    <div class="meta-row">
+      <div class="meta-field">
+        <label>Data</label>
+        <input type="date" id="meta-data">
+      </div>
+      <div class="meta-field">
+        <label>Culto</label>
+        <select id="meta-culto">
+          <option value="">Selecionar…</option>
+          <option>Santa Ceia</option>
+          <option>Domingo de Celebração</option>
+          <option>Terça do Espírito Santo</option>
+          <option>Evento Especial</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="global-progress">
+      <div class="progress-label">
+        <span>Progresso geral</span>
+        <strong id="global-count">0 / 0</strong>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="global-bar"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ══ TAB: CHECKLIST ══ -->
+  <div class="tab-panel active" id="panel-checklist">
+
+    <!-- ── GERAL ── -->
+    <div class="section" id="sec-geral">
+      <div class="section-header" onclick="toggleSection('sec-geral')">
+        <span class="section-icon">🔌</span>
+        <div class="section-title">
+          <h2>Geral</h2>
+          <div class="section-sub">Chegando na Igreja · Ligar / Verificar</div>
+        </div>
+        <span class="section-badge" id="badge-sec-geral">0/6</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-mini-bar"><div class="section-mini-fill" id="bar-sec-geral"></div></div>
+      <div class="section-body">
+        <div class="check-item" onclick="toggle(this)" data-section="sec-geral">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Rack dimmer</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-geral">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Interface Lumikit</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-geral">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Splitter HDMI (Telão e TVs)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-geral">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Roteadores</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-geral">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Disjuntores do Telão</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-geral">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Controladora do Telão</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LUZ ── -->
+    <div class="section" id="sec-luz">
+      <div class="section-header" onclick="toggleSection('sec-luz')">
+        <span class="section-icon">💡</span>
+        <div class="section-title">
+          <h2>Luz</h2>
+          <div class="section-sub">Notebook Lumikit · DMX · Par Led</div>
+        </div>
+        <span class="section-badge" id="badge-sec-luz">0/6</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-mini-bar"><div class="section-mini-fill" id="bar-sec-luz"></div></div>
+      <div class="section-body">
+        <div class="check-item" onclick="toggle(this)" data-section="sec-luz">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Notebook Lumikit (ligar)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-luz">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Fonte Notebook (Energia)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-luz">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Wifi = Cabo de rede</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-luz">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Programa = Lumikit (Abrir)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-luz">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Rack dimmer (DMX 177)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-luz">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Interruptores, Par Led e Ribaltas · Chão, Fita Led e Movies (Ligar)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROJEÇÃO ── -->
+    <div class="section" id="sec-projecao">
+      <div class="section-header" onclick="toggleSection('sec-projecao')">
+        <span class="section-icon">📽️</span>
+        <div class="section-title">
+          <h2>Projeção</h2>
+          <div class="section-sub">Computador · Holyrics · OBS · TVs</div>
+        </div>
+        <span class="section-badge" id="badge-sec-projecao">0/8</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-mini-bar"><div class="section-mini-fill" id="bar-sec-projecao"></div></div>
+      <div class="section-body">
+        <div class="check-item" onclick="toggle(this)" data-section="sec-projecao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Computador (Ligar)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-projecao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Holyrics e OBS (Abrir)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-projecao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">TVs (Ligar / Projeção)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-projecao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Telão (Ligar)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-projecao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Adicionar Músicas</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-projecao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Definir Fundo das Músicas</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-projecao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Adicionar Imagens</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-projecao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Adicionar e Testar Vídeos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TRANSMISSÃO ── -->
+    <div class="section" id="sec-transmissao">
+      <div class="section-header" onclick="toggleSection('sec-transmissao')">
+        <span class="section-icon">📡</span>
+        <div class="section-title">
+          <h2>Transmissão</h2>
+          <div class="section-sub">Câmeras · Mesa de corte · PC · OBS</div>
+        </div>
+        <span class="section-badge" id="badge-sec-transmissao">0/13</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-mini-bar"><div class="section-mini-fill" id="bar-sec-transmissao"></div></div>
+      <div class="section-body">
+        <div class="phase-divider">
+          <span class="phase-label">Câmeras</span>
+          <div class="phase-line"></div>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Câmera Central (Ligar)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Transmissor Câmera Central (Ligar)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Câmera 2 (Ligar)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Câmera 3 (Ligar)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Câmera Móvel + Transmissor (Ligar)</span>
+        </div>
+        <div class="phase-divider">
+          <span class="phase-label">Equipamentos</span>
+          <div class="phase-line"></div>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Mesa de Corte (Ligar)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Monitor de Corte (Ligar)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">PC Transmissão (Ligar)</span>
+        </div>
+        <div class="phase-divider">
+          <span class="phase-label">Software</span>
+          <div class="phase-line"></div>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Firefox (Criar Live YouTube)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">OBS (Abrir)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">OBS (Ouvir Som no Ensaio)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">OBS (Atualizar Imagens Abertura)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-transmissao">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">OBS (Testar Chegada da Letra na Live e TVs)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 10 MIN ANTES ── -->
+    <div class="section" id="sec-antes">
+      <div class="section-header" onclick="toggleSection('sec-antes')">
+        <span class="section-icon">⏱️</span>
+        <div class="section-title">
+          <h2>10 min antes do culto</h2>
+          <div class="section-sub">Testes finais · Iniciar Live</div>
+        </div>
+        <span class="section-badge" id="badge-sec-antes">0/5</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-mini-bar"><div class="section-mini-fill" id="bar-sec-antes"></div></div>
+      <div class="section-body">
+        <div class="phase-divider">
+          <span class="phase-label">Geral</span>
+          <div class="phase-line"></div>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-antes">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Testar gatilhos</span>
+        </div>
+        <div class="phase-divider">
+          <span class="phase-label">Projeção</span>
+          <div class="phase-line"></div>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-antes">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">OBS (Atualizar Imagens Abertura)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-antes">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">OBS (Projetar Abertura + Cronômetro)</span>
+        </div>
+        <div class="phase-divider">
+          <span class="phase-label">Transmissão</span>
+          <div class="phase-line"></div>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-antes">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">OBS (Iniciar Live)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-antes">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Mandar link no Grupo da Igreja</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── APÓS O CULTO ── -->
+    <div class="section" id="sec-apos">
+      <div class="section-header" onclick="toggleSection('sec-apos')">
+        <span class="section-icon">🌙</span>
+        <div class="section-title">
+          <h2>Após o culto</h2>
+          <div class="section-sub">Desligar · Finalizar transmissão</div>
+        </div>
+        <span class="section-badge" id="badge-sec-apos">0/2</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="section-mini-bar"><div class="section-mini-fill" id="bar-sec-apos"></div></div>
+      <div class="section-body">
+        <div class="check-item" onclick="toggle(this)" data-section="sec-apos">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Rack Dimmer (CENA 1)</span>
+        </div>
+        <div class="check-item" onclick="toggle(this)" data-section="sec-apos">
+          <div class="checkbox"><span class="checkmark">✓</span></div>
+          <span class="item-text">Desligar TUDO</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EQUIPE ── -->
+    <div class="equipe-section">
+      <h3>👥 Equipe de hoje</h3>
+      <div class="equipe-grid" id="equipe-grid">
+        <button class="member-btn" onclick="toggleMember(this)">Miguel</button>
+        <button class="member-btn" onclick="toggleMember(this)">Jhon Peter</button>
+        <button class="member-btn" onclick="toggleMember(this)">Clemerson</button>
+        <button class="member-btn" onclick="toggleMember(this)">Gabriel</button>
+        <button class="member-btn" onclick="toggleMember(this)">João Pedro</button>
+        <button class="member-btn" onclick="toggleMember(this)">Lucas Lima</button>
+        <button class="member-btn" onclick="toggleMember(this)">Guerra</button>
+        <button class="member-btn" onclick="toggleMember(this)">Renan</button>
+        <button class="member-btn" onclick="toggleMember(this)">Caio</button>
+        <button class="member-btn" onclick="toggleMember(this)">Tawan</button>
+        <button class="member-btn" onclick="toggleMember(this)">Nagashima</button>
+        <button class="member-btn" onclick="toggleMember(this)">Luisa</button>
+        <button class="member-btn" onclick="toggleMember(this)">Bianca</button>
+        <button class="member-btn" onclick="toggleMember(this)">Israel</button>
+        <button class="member-btn" onclick="toggleMember(this)">Isaque</button>
+      </div>
+      <div class="member-custom">
+        <input type="text" id="novo-membro" placeholder="Adicionar nome…">
+        <button onclick="addMember()">+</button>
+      </div>
+      <div class="equipe-selected" id="equipe-selected" style="display:none">
+        Servindo hoje: <span id="equipe-nomes"></span>
+      </div>
+    </div>
+
+    <!-- ── Actions ── -->
+    <div class="actions">
+      <button class="btn btn-primary" id="btn-salvar" onclick="salvarCulto()">💾 Salvar culto</button>
+      <button class="btn btn-danger" onclick="resetAll()">🗑️ Limpar tudo</button>
+    </div>
+
+  </div><!-- /panel-checklist -->
+
+  <!-- ══ TAB: HISTÓRICO ══ -->
+  <div class="tab-panel" id="panel-historico">
+    <div class="historico-header">
+      <h2>Histórico de cultos</h2>
+      <button class="btn-refresh" onclick="loadHistorico()">↻ Atualizar</button>
+    </div>
+    <div id="historico-list">
+      <div class="loading-state">Carregando…</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── Modal detalhe ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Detalhe do Culto</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <div class="loading-state">Carregando…</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-delete" id="modal-delete-btn">🗑️ Apagar registro</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── Config ──────────────────────────────────────
+  // ⚠️ Troque pela URL do seu backend no Render após o deploy
+  const API_URL = 'https://SEU-BACKEND.onrender.com';
+
+  const SECTIONS = ['sec-geral','sec-luz','sec-projecao','sec-transmissao','sec-antes','sec-apos'];
+  const STORAGE_KEY = 'checklist-midias-draft';
+
+  // ── Tab switching ───────────────────────────────
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+      b.classList.toggle('active', (i === 0 && tab === 'checklist') || (i === 1 && tab === 'historico'));
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+    document.getElementById('header-meta').style.display = tab === 'checklist' ? '' : 'none';
+
+    if (tab === 'historico') loadHistorico();
+  }
+
+  // ── Toggle item ─────────────────────────────────
+  function toggle(el) {
+    el.classList.toggle('checked');
+    updateSection(el.dataset.section);
+    updateGlobal();
+    saveDraft();
+  }
+
+  function toggleSection(id) {
+    document.getElementById(id).classList.toggle('collapsed');
+  }
+
+  function updateSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    const items = section.querySelectorAll('.check-item');
+    const done = section.querySelectorAll('.check-item.checked').length;
+    const total = items.length;
+    const badge = document.getElementById('badge-' + sectionId);
+    const bar = document.getElementById('bar-' + sectionId);
+    badge.textContent = done + '/' + total;
+    bar.style.width = total ? (done / total * 100) + '%' : '0%';
+    badge.classList.toggle('done', done === total && total > 0);
+  }
+
+  function updateGlobal() {
+    const all = document.querySelectorAll('.check-item').length;
+    const done = document.querySelectorAll('.check-item.checked').length;
+    document.getElementById('global-count').textContent = done + ' / ' + all;
+    document.getElementById('global-bar').style.width = all ? (done / all * 100) + '%' : '0%';
+  }
+
+  // ── Members ─────────────────────────────────────
+  function toggleMember(btn) {
+    btn.classList.toggle('selected');
+    updateEquipe();
+    saveDraft();
+  }
+
+  function updateEquipe() {
+    const selected = [...document.querySelectorAll('.member-btn.selected')].map(b => b.textContent);
+    const el = document.getElementById('equipe-selected');
+    document.getElementById('equipe-nomes').textContent = selected.join(', ');
+    el.style.display = selected.length > 0 ? 'block' : 'none';
+  }
+
+  function addMember() {
+    const input = document.getElementById('novo-membro');
+    const name = input.value.trim();
+    if (!name) return;
+    const btn = document.createElement('button');
+    btn.className = 'member-btn selected';
+    btn.textContent = name;
+    btn.onclick = () => toggleMember(btn);
+    document.getElementById('equipe-grid').appendChild(btn);
+    input.value = '';
+    updateEquipe();
+    saveDraft();
+  }
+
+  document.getElementById('novo-membro').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addMember();
+  });
+
+  // ── Draft (localStorage) ────────────────────────
+  function saveDraft() {
+    const items = [...document.querySelectorAll('.check-item')].map(el => ({
+      text: el.querySelector('.item-text').textContent,
+      checked: el.classList.contains('checked'),
+      section: el.dataset.section,
+    }));
+    const members = [...document.querySelectorAll('.member-btn')].map(b => ({
+      name: b.textContent,
+      selected: b.classList.contains('selected'),
+    }));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        data: document.getElementById('meta-data').value,
+        culto: document.getElementById('meta-culto').value,
+        items, members,
+      }));
+    } catch(e) {}
+  }
+
+  function loadDraft() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const state = JSON.parse(raw);
+      if (state.data) document.getElementById('meta-data').value = state.data;
+      if (state.culto) document.getElementById('meta-culto').value = state.culto;
+      if (state.items) {
+        state.items.forEach(saved => {
+          document.querySelectorAll(`.check-item[data-section="${saved.section}"]`).forEach(el => {
+            if (el.querySelector('.item-text').textContent === saved.text && saved.checked)
+              el.classList.add('checked');
+          });
+        });
+      }
+      if (state.members) {
+        const grid = document.getElementById('equipe-grid');
+        grid.querySelectorAll('.member-btn').forEach(b => b.classList.remove('selected'));
+        state.members.forEach(saved => {
+          let found = [...grid.querySelectorAll('.member-btn')].find(b => b.textContent === saved.name);
+          if (!found && saved.name) {
+            const btn = document.createElement('button');
+            btn.className = 'member-btn';
+            btn.textContent = saved.name;
+            btn.onclick = () => toggleMember(btn);
+            grid.appendChild(btn);
+            found = btn;
+          }
+          if (found && saved.selected) found.classList.add('selected');
+        });
+        updateEquipe();
+      }
+      SECTIONS.forEach(updateSection);
+      updateGlobal();
+    } catch(e) {}
+  }
+
+  // ── Salvar culto na API ─────────────────────────
+  async function salvarCulto() {
+    const data_culto = document.getElementById('meta-data').value;
+    const tipo_culto = document.getElementById('meta-culto').value;
+
+    if (!data_culto || !tipo_culto) {
+      showToast('⚠️ Preencha data e tipo de culto');
+      return;
+    }
+
+    const equipe = [...document.querySelectorAll('.member-btn.selected')].map(b => b.textContent);
+    const itens = [...document.querySelectorAll('.check-item')].map(el => ({
+      text: el.querySelector('.item-text').textContent,
+      section: el.dataset.section,
+      checked: el.classList.contains('checked'),
+    }));
+    const done_count = itens.filter(i => i.checked).length;
+    const total_itens = itens.length;
+
+    const btn = document.getElementById('btn-salvar');
+    btn.disabled = true;
+    btn.textContent = '⏳ Salvando…';
+
+    try {
+      const res = await fetch(`${API_URL}/cultos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data_culto, tipo_culto, equipe, itens, done_count, total_itens }),
+      });
+
+      if (!res.ok) throw new Error('Erro na API');
+
+      showToast('✅ Culto salvo no histórico!');
+      try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    } catch(err) {
+      showToast('❌ Erro ao salvar. Verifique a conexão.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '💾 Salvar culto';
+    }
+  }
+
+  function resetAll() {
+    if (!confirm('Limpar todo o checklist?')) return;
+    document.querySelectorAll('.check-item').forEach(el => el.classList.remove('checked'));
+    document.querySelectorAll('.member-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('meta-data').value = '';
+    document.getElementById('meta-culto').value = '';
+    updateEquipe();
+    SECTIONS.forEach(updateSection);
+    updateGlobal();
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    showToast('🗑️ Checklist limpo');
+  }
+
+  // ── Histórico ───────────────────────────────────
+  async function loadHistorico() {
+    const list = document.getElementById('historico-list');
+    list.innerHTML = '<div class="loading-state">Carregando…</div>';
+    try {
+      const res = await fetch(`${API_URL}/cultos`);
+      if (!res.ok) throw new Error();
+      const cultos = await res.json();
+
+      if (cultos.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">📭</div>
+            <p>Nenhum culto registrado ainda.</p>
+          </div>`;
+        return;
+      }
+
+      list.innerHTML = cultos.map(c => {
+        const pct = c.total_itens > 0 ? Math.round(c.done_count / c.total_itens * 100) : 0;
+        const dataFmt = c.data_culto
+          ? new Date(c.data_culto + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' })
+          : '—';
+        const equipe = Array.isArray(c.equipe) && c.equipe.length > 0 ? c.equipe.join(', ') : 'Sem equipe';
+        return `
+          <div class="culto-card" onclick="openModal(${c.id})">
+            <div class="culto-card-header">
+              <div class="culto-card-info">
+                <div class="culto-card-title">${c.tipo_culto}</div>
+                <div class="culto-card-meta">${dataFmt} · ${equipe}</div>
+              </div>
+              <div class="culto-card-progress">
+                <div class="culto-card-pct">${pct}%</div>
+                <div class="culto-card-count">${c.done_count}/${c.total_itens}</div>
+              </div>
+            </div>
+            <div class="culto-mini-bar">
+              <div class="culto-mini-fill" style="width:${pct}%"></div>
+            </div>
+          </div>`;
+      }).join('');
+    } catch(e) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <div class="icon">⚠️</div>
+          <p>Não foi possível carregar o histórico.<br>Verifique se o backend está online.</p>
+        </div>`;
+    }
+  }
+
+  // ── Modal ───────────────────────────────────────
+  let currentCultoId = null;
+
+  async function openModal(id) {
+    currentCultoId = id;
+    document.getElementById('modal-overlay').classList.add('open');
+    document.getElementById('modal-body').innerHTML = '<div class="loading-state">Carregando…</div>';
+    document.getElementById('modal-delete-btn').onclick = () => deleteCulto(id);
+
+    try {
+      const res = await fetch(`${API_URL}/cultos/${id}`);
+      if (!res.ok) throw new Error();
+      const c = await res.json();
+
+      const dataFmt = c.data_culto
+        ? new Date(c.data_culto + 'T12:00:00').toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' })
+        : '—';
+
+      const equipeHtml = Array.isArray(c.equipe) && c.equipe.length > 0
+        ? c.equipe.map(n => `<span class="modal-equipe-tag">${n}</span>`).join('')
+        : '<span style="color:var(--muted);font-size:.85rem">Não registrada</span>';
+
+      const itensHtml = Array.isArray(c.itens)
+        ? c.itens.map(item => `
+            <li class="modal-item">
+              <div class="modal-item-dot ${item.checked ? 'done' : 'not'}"></div>
+              <span class="modal-item-text ${item.checked ? 'done' : ''}">${item.text}</span>
+            </li>`).join('')
+        : '';
+
+      const pct = c.total_itens > 0 ? Math.round(c.done_count / c.total_itens * 100) : 0;
+
+      document.getElementById('modal-title').textContent = c.tipo_culto;
+      document.getElementById('modal-body').innerHTML = `
+        <div class="modal-meta">
+          <div class="modal-meta-item">
+            <label>Data</label>
+            <span>${dataFmt}</span>
+          </div>
+          <div class="modal-meta-item">
+            <label>Concluído</label>
+            <span>${c.done_count}/${c.total_itens} itens (${pct}%)</span>
+          </div>
+        </div>
+        <div style="margin-bottom:10px">
+          <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px">Equipe</div>
+          <div class="modal-equipe">${equipeHtml}</div>
+        </div>
+        <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px">Itens</div>
+        <ul class="modal-itens">${itensHtml}</ul>`;
+    } catch(e) {
+      document.getElementById('modal-body').innerHTML = '<div class="empty-state"><p>Erro ao carregar detalhes.</p></div>';
+    }
+  }
+
+  function closeModal(e) {
+    if (!e || e.target === document.getElementById('modal-overlay') || e.type === 'click') {
+      if (e && e.target !== document.getElementById('modal-overlay') && e.currentTarget !== document.querySelector('.modal-close')) return;
+      document.getElementById('modal-overlay').classList.remove('open');
+    }
+  }
+
+  document.querySelector('.modal-close').addEventListener('click', () => {
+    document.getElementById('modal-overlay').classList.remove('open');
+  });
+
+  document.getElementById('modal-overlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modal-overlay'))
+      document.getElementById('modal-overlay').classList.remove('open');
+  });
+
+  async function deleteCulto(id) {
+    if (!confirm('Apagar este registro do histórico?')) return;
+    try {
+      const res = await fetch(`${API_URL}/cultos/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error();
+      document.getElementById('modal-overlay').classList.remove('open');
+      showToast('🗑️ Registro apagado');
+      loadHistorico();
+    } catch(e) {
+      showToast('❌ Erro ao apagar registro');
+    }
+  }
+
+  // ── API health check ────────────────────────────
+  async function checkApi() {
+    const dot = document.getElementById('api-dot');
+    const txt = document.getElementById('api-status-text');
+    try {
+      const res = await fetch(`${API_URL}/health`, { signal: AbortSignal.timeout(4000) });
+      if (res.ok) {
+        dot.className = 'api-dot online';
+        txt.textContent = 'online';
+      } else throw new Error();
+    } catch {
+      dot.className = 'api-dot offline';
+      txt.textContent = 'offline';
+    }
+  }
+
+  // ── Toast ────────────────────────────────────────
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // ── Init ─────────────────────────────────────────
+  document.getElementById('meta-data').value = new Date().toISOString().split('T')[0];
+  document.getElementById('meta-data').addEventListener('change', saveDraft);
+  document.getElementById('meta-culto').addEventListener('change', saveDraft);
+
+  loadDraft();
+  SECTIONS.forEach(updateSection);
+  updateGlobal();
+  checkApi();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: checklist-midias-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: checklist-midias-db
+          property: connectionString
+      - key: ALLOWED_ORIGIN
+        sync: false   # definir manualmente no dashboard do Render (URL do GitHub Pages)
+
+databases:
+  - name: checklist-midias-db
+    plan: free
+    databaseName: checklist_midias
